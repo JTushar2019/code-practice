@@ -17,7 +17,7 @@ def subarraysWithKDistinct(nums, k):
 
         while len(d) > k:
             d[nums[i]] -= 1
-            if d[nums[i]] == 0:  # if window has dropped a distinct character
+            if d[nums[i]] == 0:  # if window has less dropped a distinct character
                 d.pop(nums[i])
             i += 1
 

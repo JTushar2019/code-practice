@@ -1,3 +1,5 @@
+# https://practice.geeksforgeeks.org/problems/maximum-of-all-subarrays-of-size-k3101/1
+
 # arr = [4, -5, 4, 3, -1, -9, -8, 5, 4, 7, 9, -3, -1, 4, -5, 8]
 arr = [1, 2, 3, 1, 4, 5, 2, 3, 6]
 

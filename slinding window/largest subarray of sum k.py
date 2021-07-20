@@ -1,3 +1,5 @@
+# https://practice.geeksforgeeks.org/problems/longest-sub-array-with-sum-k0809/1
+
 arr = [4, 5, 5, -5, 0, 0, 3]
 # here the window size is variable.
 

@@ -9,41 +9,28 @@ def subarraysWithKDistinct(nums, k):
     j = 0
     l = len(nums)
 
-    def virtual_j_forward_shifter():
-        # this virtually expands j and tries to find good subarray with current k distinct
-        # all good subarray starting with current i and longer than current j
-        nonlocal ans, i, d, j
-        p = j + 1
-        while p < l and nums[p] in d:
-            ans += 1
-            p += 1
-
-    def window_i_shifter_and_counter():
-        # this increments i till it can be done while maintaining the count of k distinct
-        # and for each increment it will call virtual expander too.
-        nonlocal ans, i, d, j
-        while d[nums[i]] > 1:
-            virtual_j_forward_shifter()
-            d[nums[i]] -= 1
-            i += 1
-            ans += 1
-
-    while j < l:
+    for j in range(l):
         d[nums[j]] += 1
-        if len(d) == k:
-            ans += 1
-            window_i_shifter_and_counter()
 
         while len(d) > k:
             d[nums[i]] -= 1
             if d[nums[i]] == 0:
                 d.pop(nums[i])
-                ans += 1
-                i += 1
-                window_i_shifter_and_counter()
-                break
             i += 1
-        j += 1
+
+        while len(d) == k:
+            # forward virtual expander towards right, head moving
+            p = j
+            while p < l and nums[p] in d:
+                ans += 1
+                p += 1
+
+            # tail moving
+            d[nums[i]] -= 1
+            if d[nums[i]] == 0:  # lets see if one unique character has been dropped from window
+                d.pop(nums[i])
+            i += 1
+
     return ans
 
 

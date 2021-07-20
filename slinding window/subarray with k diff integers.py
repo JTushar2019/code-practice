@@ -9,20 +9,21 @@ def subarraysWithKDistinct(nums, k):
     j = 0
     l = len(nums)
 
-    def virtual_expander():
+    def virtual_j_forward_shifter():
         # this virtually expands j and tries to find good subarray with current k distinct
+        # all good subarray starting with current i and longer than current j
         nonlocal ans, i, d, j
         p = j + 1
         while p < l and nums[p] in d:
             ans += 1
             p += 1
 
-    def window_contractor():
+    def window_i_shifter_and_counter():
         # this increments i till it can be done while maintaining the count of k distinct
         # and for each increment it will call virtual expander too.
         nonlocal ans, i, d, j
         while d[nums[i]] > 1:
-            virtual_expander()
+            virtual_j_forward_shifter()
             d[nums[i]] -= 1
             i += 1
             ans += 1
@@ -31,7 +32,7 @@ def subarraysWithKDistinct(nums, k):
         d[nums[j]] += 1
         if len(d) == k:
             ans += 1
-            window_contractor()
+            window_i_shifter_and_counter()
 
         while len(d) > k:
             d[nums[i]] -= 1
@@ -39,7 +40,7 @@ def subarraysWithKDistinct(nums, k):
                 d.pop(nums[i])
                 ans += 1
                 i += 1
-                window_contractor()
+                window_i_shifter_and_counter()
                 break
             i += 1
         j += 1

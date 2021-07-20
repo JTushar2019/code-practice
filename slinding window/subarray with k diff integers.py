@@ -10,22 +10,28 @@ def subarraysWithKDistinct(nums, k):
     l = len(nums)
 
     for j in range(l):
-        d[nums[j]] += 1
+        d[nums[j]] += 1  # expanding the window forward from right
+
+        if len(d) < k:
+            continue
 
         while len(d) > k:
             d[nums[i]] -= 1
-            if d[nums[i]] == 0:
+            if d[nums[i]] == 0:  # if window has less dropped a distinct character
                 d.pop(nums[i])
             i += 1
 
-        while len(d) == k:
-            # forward virtual expander towards right, head moving
-            p = j
-            while p < l and nums[p] in d:
-                ans += 1
-                p += 1
+        count = 0
+        p = j  # expanding the window virtually from right starting with current window
+        while p < l and nums[p] in d:
+            count += 1
+            p += 1
 
-            # tail moving
+        while len(d) == k:
+            # for each good subset we add all the possible combinations calculated above
+            ans += count
+
+            # moving the left end of the window towards right
             d[nums[i]] -= 1
             if d[nums[i]] == 0:  # lets see if one unique character has been dropped from window
                 d.pop(nums[i])

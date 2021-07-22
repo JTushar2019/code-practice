@@ -13,7 +13,8 @@ class Solution:
             b1 = b2 = jug2Capacity
 
         t = targetCapacity
-        if t > b1 + b2 or (t >= b2 and t % b2 > b1):
+
+        if t > b1 + b2:
             return False
 
         if t == b1 or t == b2:

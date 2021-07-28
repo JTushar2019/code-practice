@@ -1,89 +1,59 @@
 # https://leetcode.com/explore/challenge/card/july-leetcoding-challenge-2021/611/week-4-july-22nd-july-28th/3825/
-import math
-
+# https://leetcode.com/problems/word-ladder-ii/
 
 class Solution:
 
-    def neighbour(self, s1, s2):
-        count = 0
-        for i in range(len(s1)):
-            if s1[i] != s2[i]:
-                count += 1
-                if count > 1:
-                    return False
-        if count == 1:
-            return True
-
     def findLadders(self, beginWord, endWord, wordList):
 
-        if beginWord not in wordList:
-            wordList.append(beginWord)
+        from collections import defaultdict, deque
+        l = len(endWord)
         if endWord not in wordList:
             return []
-        size = len(endWord)
-        beginWord, endWord = endWord, beginWord
-        vertex = dict.fromkeys(wordList)
-        # print(vertex)
-        from collections import defaultdict
-        edgeList = defaultdict(list)
+        intermediate_words = defaultdict(set)
+        for each in wordList:
+            for i in range(l):
+                word = each[:i] + "*" + each[i + 1:]
+                intermediate_words[word].add(each)
+        level = defaultdict(int)
 
-        deapth = {node: math.inf for node in vertex}
-        minlen = math.inf
-        from collections import deque
         q = deque()
         q.append(beginWord)
-        deapth[beginWord] = 0
-        visisted = {each: False for each in vertex}
+        visited = set(beginWord)
+        level = defaultdict(lambda: -1)
+        level[beginWord] = 0
         while len(q):
             node = q.popleft()
-            vertex.pop(node)
-            if deapth[node] > minlen:
-                continue
-
             if node == endWord:
-                minlen = min(deapth[node], minlen)
-                vertex[node] = None
-                visisted[node] = False
-                continue
-
-            for each in vertex:
-                count = 0
-                for i in range(size):
-                    if each[i] != node[i]:
-                        count += 1
-                        if count > 1:
-                            break
-                if count == 1:
-                    edgeList[node].append(each)
-                    if not visisted[each]:
+                break
+            for i in range(l):
+                word = node[:i] + "*" + node[i + 1:]
+                for each in intermediate_words[word]:
+                    if level[each] == -1 or level[node] < level[each]:
+                        intermediate_words[node].add(each)
+                        level[each] = 1 + level[node]
+                    if each not in visited:
+                        visited.add(each)
                         q.append(each)
-                        visisted[each] = True
-                    deapth[each] = min(deapth[node] + 1, deapth[each])
 
-        allAns = []
-        ans = q
-        ans.append(beginWord)
+        allans = []
+        arr = [beginWord]
 
-        # print(minlen)
-
-        def dfs(node, long):
-            nonlocal endWord, edgeList, allAns
-            if long > minlen:
-                return
+        def dfs(node):
+            nonlocal intermediate_words, arr, endWord, allans
             if node == endWord:
-                allAns.append(list(q)[::-1])
+                allans.append(arr[:])
                 return
 
-            for each in edgeList[node]:
-                ans.append(each)
-                dfs(each, long + 1)
-                ans.pop()
+            for each in intermediate_words[node]:
+                arr.append(each)
+                dfs(each)
+                arr.pop()
 
-        dfs(beginWord, 0)
+        dfs(beginWord)
+        print(allans)
+        return allans
 
-        # print(allAns)
         # print('*******************')
-        return allAns
 
 
 s = Solution()

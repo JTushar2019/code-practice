@@ -50,32 +50,42 @@ class Solution:
                         visisted[each] = True
                     deapth[each] = min(deapth[node] + 1, deapth[each])
 
-
         if minlen == math.inf:
             return 0
         return minlen + 1
 
+
 import collections
 
+
 class optimal_Solution:
-    def ladderLength(self, beginWord: str, endWord: str, wordList: List[str]) -> int:
-        length = len(beginWord)
-        dict = collections.defaultdict(list)
-        for word in wordList:
-            for i in range (length):
-                new = word[:i] + '*' + word[i+1:]
-                dict[new].append(word)
-        visit = set()
-        visit.add(beginWord)
-        queue = collections.deque([(beginWord, 1)])
-        while queue:
-            cur, level = queue.popleft()
-            for i in range (length):
-                trans = cur[:i] + '*' + cur[i+1:]
-                for word in dict[trans]:
-                    if word == endWord:
-                        return level + 1
-                    if word not in visit:
-                        queue.append((word, level+1))
-                        visit.add(word)
+    def ladderLength(self, beginWord, endWord, wordList):
+        from collections import defaultdict, deque
+        l = len(endWord)
+        if endWord not in wordList:
+            return []
+        intermediate_words = defaultdict(list)
+        for each in wordList:
+            for i in range(l):
+                word = each[:i] + "*" + each[i + 1:]
+                intermediate_words[word].append(each)
+
+        q = deque()
+        q.append(beginWord)
+        level = defaultdict(int)
+        visited = {beginWord: True}
+        while len(q):
+            node = q.popleft()
+            if node == endWord:
+                return level[node] + 1
+
+            for i in range(l):
+                word = node[:i] + "*" + node[i + 1:]
+
+                for each in intermediate_words[word]:
+                    if each not in visited:
+                        visited[each] = True
+                        q.append(each)
+                        level[each] = level[node] + 1
+
         return 0

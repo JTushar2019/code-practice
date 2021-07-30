@@ -2,7 +2,6 @@
 
 class Solution:
     def minimumTimeRequired(self, jobs, k):
-        import heapq as hp
         import math
         work = [0] * k
         l = len(jobs)

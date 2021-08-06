@@ -1,10 +1,18 @@
 # https://leetcode.com/explore/featured/card/august-leetcoding-challenge-2021/613/week-1-august-1st-august-7th/3871/
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> deab56880a408cf319ce8826c1989e75b6a9293a
 class Node:
     def __init__(self, val=None, children=None):
         self.val = val
         self.children = children
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> deab56880a408cf319ce8826c1989e75b6a9293a
 class Solution:
     def levelOrder(self, root):
         from collections import defaultdict, deque

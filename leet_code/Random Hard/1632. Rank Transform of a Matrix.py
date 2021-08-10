@@ -55,6 +55,7 @@ class Solution:
         print("*********")
         for each in newmat:
             print(each)
+        return newmat
 
 
 # s = Solution()
